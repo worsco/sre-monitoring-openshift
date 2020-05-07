@@ -47,6 +47,12 @@ spec:
           name: secret-prometheus-k8s-proxy
   replicas: 2
   serviceAccountName: {{ .Values.prometheus.name }}
+  serviceMonitorNamespaceSelector:
+    matchLabels:
+      maistra.io/member-of: istio-system
+  volumeMounts:
+    - mountPath: /etc/istio-certs
+      name: istio-certs
   serviceMonitorSelector: {}
   alerting:
     alertmanagers:
