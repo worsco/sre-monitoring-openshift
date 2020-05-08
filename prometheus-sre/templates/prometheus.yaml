@@ -12,6 +12,7 @@ spec:
   secrets:
     - prometheus-k8s-tls
     - prometheus-k8s-proxy
+    - istio-certs
   containers:
     - args:
         - '-provider=openshift'
@@ -31,7 +32,7 @@ spec:
         - '-openshift-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
         - '-skip-auth-regex=^/metrics'
       image: 'quay.io/openshift/origin-oauth-proxy:4.6'
-      name: prometheus-proxy
+      name: proxy
       ports:
         - containerPort: 9091
           name: proxy
@@ -50,9 +51,6 @@ spec:
   serviceMonitorNamespaceSelector:
     matchLabels:
       maistra.io/member-of: istio-system
-  volumeMounts:
-    - mountPath: /etc/istio-certs
-      name: istio-certs
   serviceMonitorSelector: {}
   alerting:
     alertmanagers:
