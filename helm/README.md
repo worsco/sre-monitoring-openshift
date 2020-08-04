@@ -24,8 +24,6 @@ echo "members: $(oc get ServiceMeshMemberRoll/default -n ${istio_cp_namespace} -
 
 export basicAuthPassword=$(oc extract secret/grafana-datasources -n openshift-monitoring --keys=prometheus.yaml --to=- | grep -zoP '"basicAuthPassword":\s*"\K[^\s,]*(?=\s*",)')
 
-oc adm policy add-cluster-role-to-group system:auth-delegator system:serviceaccounts:${deploy_namespace} --rolebinding-name=oauth-proxy-serviceaccounts
-
 export cluster_admin_tasks_release_name=cluster-admin-tasks
 
 helm upgrade -i ${cluster_admin_tasks_release_name} -n ${deploy_namespace} --set secrets.basicAuthPassword=${basicAuthPassword} --set istio_control_plane.namespace=${istio_cp_namespace} -f /tmp/members.yaml cluster-admin-tasks
@@ -47,6 +45,8 @@ Optional: make future prometheus operator upgrades require Manual Approval
 
 ```sh
 oc patch subscription prometheus-operator --type='json' -p='[{"op": "replace", "path": "/spec/installPlanApproval", "value":"Manual"}]' -n ${deploy_namespace}
+
+oc patch subscription grafana-operator --type='json' -p='[{"op": "replace", "path": "/spec/installPlanApproval", "value":"Manual"}]' -n ${deploy_namespace}
 ```
 
 ### sre-admin-tasks
