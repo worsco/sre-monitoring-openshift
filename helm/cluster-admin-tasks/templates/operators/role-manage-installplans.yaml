@@ -1,0 +1,10 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: manage-installplans
+rules:
+- apiGroups: ["operators.coreos.com"]
+  resources: ["installplans"]
+  verbs: ["get", "update", "patch"]
+...
