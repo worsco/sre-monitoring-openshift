@@ -27,6 +27,9 @@ export basicAuthPassword=$(oc extract secret/grafana-datasources -n openshift-mo
 export cluster_admin_tasks_release_name=cluster-admin-tasks
 
 helm upgrade -i ${cluster_admin_tasks_release_name} -n ${deploy_namespace} --set secrets.basicAuthPassword=${basicAuthPassword} --set istio_control_plane.namespace=${istio_cp_namespace} -f /tmp/members.yaml cluster-admin-tasks
+
+#control the grafana image
+oc patch csv grafana-operator.v3.5.0 --type='json' -p='[{"op": "replace", "path": "/spec/install/spec/deployments/0/spec/template/spec/containers/0/args", "value":["--grafana-image=quay.io/app-sre/grafana","--grafana-image-tag=6.5.1"]}]' -n ${deploy_namespace}
 ```
 
 ### sre-admin-operators
