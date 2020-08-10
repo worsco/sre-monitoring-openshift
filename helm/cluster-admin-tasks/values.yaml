@@ -5,3 +5,7 @@ prometheus:
   name: sre-prometheus
 grafana:
   name: sre-grafana
+istio_control_plane:
+  namespace: istio-system
+secrets:
+  basicAuthPassword: password
