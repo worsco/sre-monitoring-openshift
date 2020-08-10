@@ -2,16 +2,17 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: NamespaceConfig
 metadata:
   name: sre-prometheus-{{ .Values.istio_control_plane.namespace }}
+spec:
   labelSelector:
     matchLabels:
-      maistra.io/member-of: {{ .Values.istio_control_plane.namespace }} 
+      maistra.io/member-of: {{ .Values.istio_control_plane.namespace }}
   templates:
   - objectTemplate: |
       kind: RoleBinding
       apiVersion: rbac.authorization.k8s.io/v1
       metadata:
         name: {{ .Values.prometheus.name }}
-        namespace: {{ printf "%s" "{{ .metadata.Name }}" }}
+        namespace: {{ printf "%s" "{{ .Name }}" }}
       subjects:
       - kind: ServiceAccount
         namespace: {{ .Release.Namespace }}
