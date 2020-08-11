@@ -15,3 +15,7 @@ session:
 istio_control_plane:
   name: basic-install
   namespace: istio-system
+istio_cert:
+  cert_chain:
+  key:
+  root_cert:
