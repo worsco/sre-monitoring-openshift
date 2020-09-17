@@ -19,7 +19,7 @@ prometheus_datasource:
   istio_system:
     password: "TODO"
 session:
-  secret: ciao
+  secret: hola
 istio_control_plane:
   name: basic-install
   namespace: istio-system
