@@ -5,3 +5,7 @@ prometheus:
   name: sre-prometheus
 grafana:
   name: sre-grafana
+members:
+  - istio-system-egress
+  - bookinfo
+  - sre-monitoring
