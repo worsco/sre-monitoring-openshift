@@ -2016,7 +2016,7 @@
                     "text": "5m",
                     "value": "5m"
                 },
-                "datasource": "prometheus-openshift-monitoring",
+                "datasource": "default",
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
