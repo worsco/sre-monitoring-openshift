@@ -9,3 +9,5 @@ members:
   - istio-system-egress
   - bookinfo
   - sre-monitoring
+istio_control_plane:
+  namespace: istio-system
