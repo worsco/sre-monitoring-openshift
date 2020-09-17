@@ -11,7 +11,7 @@ spec:
       type: prometheus
       access: proxy
       url: http://prometheus-operated.{{ .Release.Namespace }}.svc:9090
-      isDefault: false
+      isDefault: true
       version: 1
       editable: false
       jsonData:

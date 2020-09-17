@@ -3,6 +3,14 @@ alertmanager:
   name: sre-alertmanager
 prometheus:
   name: sre-prometheus
+  additional_scrape_configs:
+    ocp_platform_monitoring:
+      namespaces:
+        - openshift-monitoring
+        - openshift-etcd
+        - "test-*" # any namespace beginning with test-
+        - istio-system-egress
+        - bookinfo
 grafana:
   name: sre-grafana
 prometheus_datasource:

@@ -21,12 +21,9 @@ These must be run by a cluster admin.
 ```shell
 #Get a list of members to add a rolebinding using grafanadatasource-prometheus-istio-system.yaml in each control plane member namespace
 echo "members: $(oc get ServiceMeshMemberRoll/default -n ${istio_cp_namespace} -o jsonpath="{.spec.members}" | sed s'/ /, /g')" > /tmp/members.yaml
-
-export basicAuthPassword=$(oc extract secret/grafana-datasources -n openshift-monitoring --keys=prometheus.yaml --to=- | grep -zoP '"basicAuthPassword":\s*"\K[^\s,]*(?=\s*",)')
-
 export cluster_admin_tasks_release_name=cluster-admin-tasks
 
-helm upgrade -i ${cluster_admin_tasks_release_name} -n ${deploy_namespace} --set secrets.basicAuthPassword=${basicAuthPassword} --set istio_control_plane.namespace=${istio_cp_namespace} -f /tmp/members.yaml cluster-admin-tasks
+helm upgrade -i ${cluster_admin_tasks_release_name} -n ${deploy_namespace} --set istio_control_plane.namespace=${istio_cp_namespace} -f /tmp/members.yaml cluster-admin-tasks
 ```
 
 ### sre-admin-operators
@@ -60,7 +57,7 @@ export root_cert_pem=$(oc get secret -n ${istio_cp_namespace} istio.default -o j
 
 export sre_admin_tasks_release_name=sre-admin-tasks
 
-helm upgrade -i ${sre_admin_tasks_release_name} -n ${deploy_namespace} --set istio_control_plane.name=${istio_cp_name} --set istio_control_plane.namespace=${istio_cp_namespace} --set istio_cert.cert_chain=${cert_chain_pem} --set istio_cert.key=${key_pem} --set istio_cert.root_cert=${root_cert_pem} --set prometheus_datasource.openshift_monitoring.password=$(oc extract secret/openshift-monitoring-prometheus -n ${deploy_namespace} --keys=basicAuthPassword --to=-) sre-admin-tasks
+helm upgrade -i ${sre_admin_tasks_release_name} -n ${deploy_namespace} --set istio_control_plane.name=${istio_cp_name} --set istio_control_plane.namespace=${istio_cp_namespace} --set istio_cert.cert_chain=${cert_chain_pem} --set istio_cert.key=${key_pem} --set istio_cert.root_cert=${root_cert_pem} sre-admin-tasks
 ```
 
 ### cleanup
