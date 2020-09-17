@@ -13,11 +13,6 @@ prometheus:
         - bookinfo
 grafana:
   name: sre-grafana
-prometheus_datasource:
-  openshift_monitoring:
-    password: "TODO"
-  istio_system:
-    password: "TODO"
 session:
   secret: hola
 istio_control_plane:
