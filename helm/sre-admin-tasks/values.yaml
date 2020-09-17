@@ -14,7 +14,7 @@ prometheus:
 grafana:
   name: sre-grafana
 session:
-  secret: hola
+  secret: ciao
 istio_control_plane:
   name: basic-install
   namespace: istio-system
