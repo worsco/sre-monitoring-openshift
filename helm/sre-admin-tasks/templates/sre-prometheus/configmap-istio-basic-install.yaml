@@ -1,0 +1,54 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: istio-{{ .Values.istio_control_plane.name }}
+data:
+  mesh: |-
+    accessLogEncoding: TEXT
+    accessLogFile: /dev/stdout
+    accessLogFormat: ""
+    defaultConfig:
+      concurrency: 2
+      configPath: ./etc/istio/proxy
+      connectTimeout: 10s
+      controlPlaneAuthPolicy: NONE
+      discoveryAddress: istiod-{{ .Values.istio_control_plane.name }}.{{ .Values.istio_control_plane.namespace }}.svc:15012
+      drainDuration: 45s
+      parentShutdownDuration: 1m0s
+      proxyAdminPort: 15000
+      proxyMetadata:
+        DNS_AGENT: ""
+      serviceCluster: istio-proxy
+      tracing:
+        tlsSettings:
+          caCertificates: null
+          clientCertificate: null
+          mode: DISABLE
+          privateKey: null
+          sni: null
+          subjectAltNames: []
+        zipkin:
+          address: jaeger-collector.{{ .Values.istio_control_plane.namespace }}.svc:9411
+    disableMixerHttpReports: true
+    disablePolicyChecks: true
+    enableAutoMtls: true
+    enableEnvoyAccessLogService: false
+    enablePrometheusMerge: false
+    enableTracing: true
+    ingressClass: istio
+    ingressControllerMode: STRICT
+    ingressService: istio-ingressgateway
+    localityLbSetting:
+      enabled: true
+    outboundTrafficPolicy:
+      mode: ALLOW_ANY
+    protocolDetectionTimeout: 100ms
+    reportBatchMaxEntries: 100
+    reportBatchMaxTime: 1s
+    rootNamespace: {{ .Values.istio_control_plane.namespace }}
+    sdsUdsPath: unix:/etc/istio/proxy/SDS
+    trustDomain: cluster.local
+    trustDomainAliases: null
+  meshNetworks: 'networks: {}'
+...

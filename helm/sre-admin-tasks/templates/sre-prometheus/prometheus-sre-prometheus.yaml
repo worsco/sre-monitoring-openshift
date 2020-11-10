@@ -7,6 +7,22 @@ metadata:
     prometheus: {{ .Values.prometheus.name }}
   namespace: {{ .Release.Namespace }}
 spec:
+  volumes:
+    - name: istio-certs
+      emptyDir:
+        medium: Memory
+    - name: istiod-ca-cert
+      configMap:
+        name: istio-ca-root-cert
+        defaultMode: 420
+    - name: istio-envoy
+      emptyDir:
+        medium: Memory
+    - name: istio-config-volume
+      configMap:
+        name: istio-basic-install
+        defaultMode: 420
+        optional: true
   resources:
     requests:
       memory: 256Mi
@@ -49,6 +65,9 @@ spec:
         - '--discovery.member-roll-name=default'
         - '--discovery.member-roll-namespace={{ .Values.istio_control_plane.namespace }}'
       name: prometheus
+      volumeMounts:
+        - name: istio-certs
+          mountPath: /etc/istio-certs/
     - args:
         - '-provider=openshift'
         - '-pass-basic-auth=false'
@@ -84,6 +103,85 @@ spec:
         - mountPath: /etc/configmap/trusted-ca-bundle
           name: configmap-trusted-ca-bundle
           readOnly: true
+    - resources: {}
+      readinessProbe:
+        httpGet:
+          path: /healthz/ready
+          port: 15020
+          scheme: HTTP
+        initialDelaySeconds: 1
+        timeoutSeconds: 1
+        periodSeconds: 2
+        successThreshold: 1
+        failureThreshold: 30
+      terminationMessagePath: /dev/termination-log
+      name: istio-proxy
+      env:
+        - name: OUTPUT_CERTS
+          value: /etc/istio-certs
+        - name: JWT_POLICY
+          value: first-party-jwt
+        - name: PILOT_CERT_PROVIDER
+          value: istiod
+        - name: CA_ADDR
+          value: 'istiod-basic-install.istio-system.svc:15012'
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: INSTANCE_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        - name: SERVICE_ACCOUNT
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.serviceAccountName
+        - name: HOST_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.hostIP
+        - name: ISTIO_META_MESH_ID
+          value: cluster.local
+        - name: ISTIO_META_CLUSTER_ID
+          value: Kubernetes
+      ports:
+        - name: http-envoy-prom
+          containerPort: 15090
+          protocol: TCP
+      imagePullPolicy: Always
+      volumeMounts:
+        - name: istiod-ca-cert
+          mountPath: /var/run/secrets/istio
+        - name: istio-envoy
+          mountPath: /etc/istio/proxy
+        - name: istio-certs
+          mountPath: /etc/istio-certs/
+        - name: istio-config-volume
+          mountPath: /etc/istio/config
+      terminationMessagePolicy: File
+      image: >-
+        registry.redhat.io/openshift-service-mesh/proxyv2-rhel8@sha256:0caf9b891ee75f26e4bf2ac9274c7578da5786305e6987a6a4163c5173bf243e
+      args:
+        - proxy
+        - sidecar
+        - '--domain'
+        - $(POD_NAMESPACE).svc.cluster.local
+        - istio-proxy-prometheus
+        - '--proxyLogLevel=warning'
+        - '--proxyComponentLogLevel=misc:error'
+        - '--controlPlaneAuthPolicy'
+        - NONE
+        - '--trust-domain=cluster.local'
   replicas: 2
   serviceAccountName: {{ .Values.prometheus.name }}
   serviceMonitorSelector: {}

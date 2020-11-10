@@ -19,3 +19,4 @@ session:
 istio_control_plane:
   name: basic-install
   namespace: istio-system
+  root_cert:
