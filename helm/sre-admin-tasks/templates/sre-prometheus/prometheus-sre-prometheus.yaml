@@ -206,12 +206,12 @@ spec:
     matchLabels: 
       role: alert-rules
       prometheus: {{ .Values.prometheus.name }}
-  serviceMonitorSelector: 
-    matchLabels: 
-      sre-monitoring: "true"
-  podMonitorSelector:
-    matchLabels:
-      sre-monitoring: "true"
+  #serviceMonitorSelector: 
+    #matchLabels: 
+      #sre-monitoring: "true"
+  #podMonitorSelector:
+    #matchLabels:
+      #sre-monitoring: "true"
   #ruleNamespaceSelector:
     #matchLabels:
       #maistra.io/member-of: {{ .Values.istio_control_plane.namespace }}

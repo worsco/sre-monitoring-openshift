@@ -12,6 +12,7 @@ prometheus:
         - "istio-*" # any namespace beginning with istio-
         - bookinfo
         - sre-monitoring
+        - mongodb
 grafana:
   name: sre-grafana
 session:
