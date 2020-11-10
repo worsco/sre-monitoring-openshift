@@ -31,7 +31,7 @@ spec:
   secrets:
     - prometheus-k8s-tls
     - prometheus-k8s-proxy
-    - istio-certs
+    #- istio-certs
   configMaps:
     - serving-certs-ca-bundle
     - trusted-ca-bundle   

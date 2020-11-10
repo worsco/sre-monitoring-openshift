@@ -51,13 +51,13 @@ oc patch subscription grafana-operator --type='json' -p='[{"op": "replace", "pat
 These tasks must be run by an admin on both ${deploy_namespace} and ${istio_cp_namespace} projects.
 
 ```shell
-export cert_chain_pem=$(oc get secret -n ${istio_cp_namespace} istio.default -o jsonpath="{.data['cert-chain\.pem']}")
-export key_pem=$(oc get secret -n ${istio_cp_namespace} istio.default -o jsonpath="{.data['key\.pem']}")
-export root_cert_pem=$(oc get secret -n ${istio_cp_namespace} istio.default -o jsonpath="{.data['root-cert\.pem']}")
+#export cert_chain_pem=$(oc get secret -n ${istio_cp_namespace} istio.default -o jsonpath="{.data['cert-chain\.pem']}")
+#export key_pem=$(oc get secret -n ${istio_cp_namespace} istio.default -o jsonpath="{.data['key\.pem']}")
+#export root_cert_pem=$(oc get secret -n ${istio_cp_namespace} istio.default -o jsonpath="{.data['root-cert\.pem']}")
 
 export sre_admin_tasks_release_name=sre-admin-tasks
 
-helm upgrade -i ${sre_admin_tasks_release_name} -n ${deploy_namespace} --set istio_control_plane.name=${istio_cp_name} --set istio_control_plane.namespace=${istio_cp_namespace} --set istio_cert.cert_chain=${cert_chain_pem} --set istio_cert.key=${key_pem} --set istio_cert.root_cert=${root_cert_pem} sre-admin-tasks
+helm upgrade -i ${sre_admin_tasks_release_name} -n ${deploy_namespace} --set istio_control_plane.name=${istio_cp_name} --set istio_control_plane.namespace=${istio_cp_namespace} sre-admin-tasks
 ```
 
 ### cleanup

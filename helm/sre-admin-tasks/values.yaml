@@ -9,8 +9,9 @@ prometheus:
         - openshift-monitoring
         - openshift-etcd
         - "test-*" # any namespace beginning with test-
-        - istio-system-egress
+        - "istio-*" # any namespace beginning with istio-
         - bookinfo
+        - sre-monitoring
 grafana:
   name: sre-grafana
 session:
@@ -18,7 +19,3 @@ session:
 istio_control_plane:
   name: basic-install
   namespace: istio-system
-istio_cert:
-  cert_chain:
-  key:
-  root_cert:
