@@ -50,6 +50,8 @@ oc patch subscription grafana-operator --type='json' -p='[{"op": "replace", "pat
 
 These tasks must be run by an admin on both ${deploy_namespace} and ${istio_cp_namespace} projects.
 
+> Note: with ossm 2.0 you need to disable the egress gateway before running this and ensure the netoworkpolicies get created. For some reason the operator won't reconcile egress gateways in other namespaces and this will pause all reconciliation.
+
 ```shell
 export root_cert=$(oc get configmap istio-ca-root-cert -n istio-system -o jsonpath="{.data.root-cert\.pem}")
 
