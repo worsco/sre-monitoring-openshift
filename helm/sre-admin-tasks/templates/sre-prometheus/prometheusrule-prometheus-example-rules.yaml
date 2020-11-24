@@ -18,4 +18,13 @@ spec:
         description: {{` "Application {{ $labels.app }} of job {{ $labels.job }} has been down for more than 1 minute." `}}
       expr: absent(up{app="productpage",job="envoy-stats"})
       for: 1m
+    - alert: "Storage Saturation"
+      labels:
+        severity: critical
+      annotations:
+        summary: Storage usage over 75%
+        persistentvolumeclaim: {{` "{{ $labels.persistentvolumeclaim }}" `}}
+        namespace: {{` "{{ $labels.namespace }}" `}}
+      expr: kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes > 0.75
+      for: 1m
 ...
