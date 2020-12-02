@@ -1,0 +1,2 @@
+grafana_operator:
+  installPlanApproval: Automatic

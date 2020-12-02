@@ -1,0 +1,9 @@
+grafana:
+  name: grafana
+  proxy:
+    session:
+      secret: ciao
+  datasources:
+    prometheus:
+      openshift_monitoring:
+        password:
