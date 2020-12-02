@@ -1,5 +1,7 @@
 # Deploy managed Grafana for openshift-monitoring
 
+Run this as a cluster admin.
+
 ```sh
 export deploy_namespace=openshift-monitoring-ext
 
