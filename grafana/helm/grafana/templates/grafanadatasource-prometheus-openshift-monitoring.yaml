@@ -6,7 +6,7 @@ metadata:
 spec:
   name: prometheus-openshift-monitoring.yaml
   datasources:
-    - name: prometheus-openshift-monitoring
+    - name: prometheus
       type: prometheus
       access: proxy
       url: https://prometheus-k8s.openshift-monitoring.svc:9091

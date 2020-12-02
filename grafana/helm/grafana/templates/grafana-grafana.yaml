@@ -79,7 +79,4 @@ spec:
   dashboardLabelSelector:
     - matchExpressions:
         - { key: "app", operator: In, values: ['grafana'] }
-  deployment:
-    labels:
-      maistra.io/expose-route: 'true'
 ...
