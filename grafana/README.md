@@ -26,7 +26,7 @@ helm upgrade -i --create-namespace grafana-operator helm/operator -n ${deploy_na
 This will update the json files within helm/grafana/dashboards/openshift-monitoring.
 
 ```sh
-./export-opensihft-monitoring-dashboards.sh
+./export-openshift-monitoring-dashboards.sh
 ```
 
 ## Deploy grafana
