@@ -2,7 +2,7 @@
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: operatorgroup-{{ .Release.Namespace }}
+  name: monitoring-{{ .Release.Namespace }}
 spec:
   targetNamespaces:
   - {{ .Release.Namespace }}
