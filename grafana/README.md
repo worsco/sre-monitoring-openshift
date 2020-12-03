@@ -2,9 +2,21 @@
 
 Run this as a cluster admin.
 
+## Setup
+
 ```sh
 export deploy_namespace=openshift-monitoring-ext
+```
 
+Optional - add network policies and quota to mimic production env
+
+```sh
+helm upgrade -i --create-namespace admin helm/admin -n ${deploy_namespace}
+```
+
+## Deploy
+
+```sh
 helm upgrade -i --create-namespace grafana-operator helm/operator -n ${deploy_namespace}
 helm upgrade -i --create-namespace grafana-operator helm/operator -n ${deploy_namespace} --set grafana_operator.installPlanApproval="Manual"
 
