@@ -18,8 +18,9 @@ helm upgrade -i --create-namespace admin helm/admin -n ${deploy_namespace}
 
 ```sh
 helm upgrade -i --create-namespace grafana-operator helm/operator -n ${deploy_namespace}
-helm upgrade -i --create-namespace grafana-operator helm/operator -n ${deploy_namespace} --set grafana_operator.installPlanApproval="Manual"
 ```
+
+> Note: you need to manually approve the InstallPlan to install the grafana-operator
 
 ## Optional - update dashboards for your OCP version
 
