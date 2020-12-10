@@ -64,7 +64,7 @@ helm upgrade -i chargeback helm/prometheus -n ${deploy_namespace}
 If there is load on the namespaces, you should be able to compute averages using the custom metric.
 
 ```promql
-avg_over_time(chargeback:container_memory_working_set_bytes:sum[24h])
+avg_over_time(label_example_com_owner_number:container_memory_working_set_bytes:sum[24h])
 ```
 
 After this is complete the `Chargeback` dashboard should also work in Grafana.
