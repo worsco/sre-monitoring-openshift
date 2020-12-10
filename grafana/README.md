@@ -35,3 +35,34 @@ This will update the json files within helm/grafana/dashboards/openshift-monitor
 ```sh
 helm upgrade -i --create-namespace grafana helm/grafana -n ${deploy_namespace} --set grafana.datasources.prometheus.openshift_monitoring.password=$(oc extract secret/grafana-datasources -n openshift-monitoring --keys=prometheus.yaml --to=- | grep -zoP '"basicAuthPassword":\s*"\K[^\s,]*(?=\s*",)')
 ```
+
+## Chargeback testing
+
+This example creates a new metric for aggregating container memory usage by namespaces with matching `example.com/owner-number` labels.
+
+Add the cluster-monitoring label to the namespace to allow openshift-monitoring to consume the prometheus rule.
+
+```sh
+oc label namespace ${deploy_namespace} openshift.io/cluster-monitoring='true'
+```
+
+Additionally you will need to label namespaces with `example.com/owner-number` to aggregate upon.
+
+For Example:
+
+```sh
+oc label namespace ${deploy_namespace} example.com/owner-number='0000'
+oc label namespace default example.com/owner-number='0000'
+```
+
+Deploy PrometheusRule...
+
+```sh
+helm upgrade -i chargeback helm/prometheus -n ${deploy_namespace}
+```
+
+If there is load on the namespaces, you should be able to compute averages using the custom metric.
+
+```promql
+avg_over_time(label_example_com_owner_number:container_memory_working_set_bytes:sum[24h])
+```

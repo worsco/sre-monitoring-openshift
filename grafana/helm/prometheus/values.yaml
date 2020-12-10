@@ -1,0 +1,2 @@
+namespace_label: example.com/owner-number
+prometheus_label: label_example_com_owner_number 
