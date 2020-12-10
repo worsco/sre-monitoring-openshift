@@ -1,0 +1,11 @@
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: grafana-dashboard-chargeback
+  labels:
+    app: grafana
+spec:
+  name: chargeback.json
+  json: {{ .Files.Get "dashboards/chargeback-monitoring/chargeback.json" | toPrettyJson }}
+...
