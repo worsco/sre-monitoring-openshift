@@ -55,5 +55,5 @@ This will update the json files within helm/grafana/dashboards/openshift-monitor
 ## Deploy grafana
 
 ```sh
-helm upgrade -i --create-namespace grafana helm/grafana -n ${deploy_namespace} --set grafana.datasources.prometheus.openshift_monitoring.password=$(oc extract secret/grafana-datasources -n openshift-monitoring --keys=prometheus.yaml --to=- | grep -zoP '"basicAuthPassword":\s*"\K[^\s,]*(?=\s*",)')
+helm upgrade -i --create-namespace grafana helm/grafana -n ${DEPLOYNAMESPACE} --set grafana.datasources.prometheus.openshift_monitoring.password=$(oc extract secret/grafana-datasources -n openshift-monitoring --keys=prometheus.yaml --to=- | grep -zoP '"basicAuthPassword":\s*"\K[^\s,]*(?=\s*",)')
 ```
