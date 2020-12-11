@@ -29,11 +29,11 @@ helm upgrade -i --create-namespace grafana-operator helm/operator -n ${DEPLOYNAM
 ## Manually approve the InstallPlan to install the grafana-operator
 
 ```sh
-oc get installplans
+oc get installplans -n ${DEPLOYNAMESPACE}
 ```
 
 ```sh
-oc patch installplan <INSTALLPLAN> --type merge -p '{"spec":{"approved":true}}'
+oc patch installplan <INSTALLPLAN> n ${DEPLOYNAMESPACE} --type merge -p '{"spec":{"approved":true}}'
 ```
 
 # Patch the CSV so that it is using a named registry in the image instead of defaulting to "grafana/grafana"
