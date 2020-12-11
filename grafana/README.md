@@ -33,7 +33,7 @@ oc get installplans -n ${DEPLOYNAMESPACE}
 ```
 
 ```sh
-oc patch installplan <INSTALLPLAN> n ${DEPLOYNAMESPACE} --type merge -p '{"spec":{"approved":true}}'
+oc patch installplan <INSTALLPLAN> -n ${DEPLOYNAMESPACE} --type merge -p '{"spec":{"approved":true}}'
 ```
 
 ## Patch the CSV so that it is using a named registry in the image instead of defaulting to "grafana/grafana"
