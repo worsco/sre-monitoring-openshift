@@ -5,22 +5,44 @@ Run this as a cluster admin.
 ## Setup
 
 ```sh
-export deploy_namespace=openshift-monitoring-ext
+export DEPLOYNAMESPACE=my-grafana
 ```
 
-Optional - add network policies and quota to mimic production env
+## Create namespace
 
 ```sh
-helm upgrade -i --create-namespace admin helm/admin -n ${deploy_namespace}
+oc new-project $DEPLOYNAMESPACE
+```
+
+Optional - add network policies and quota to mimic production env 
+
+```sh
+helm upgrade -i --create-namespace admin helm/admin -n ${DEPLOYNAMESPACE}
 ```
 
 ## Deploy operator
 
 ```sh
-helm upgrade -i --create-namespace grafana-operator helm/operator -n ${deploy_namespace}
+helm upgrade -i --create-namespace grafana-operator helm/operator -n ${DEPLOYNAMESPACE}
 ```
 
-> Note: you need to manually approve the InstallPlan to install the grafana-operator
+# Note: you need to manually approve the InstallPlan to install the grafana-operator
+
+```sh
+oc get installplans
+```
+
+```sh
+oc patch installplan <INSTALLPLAN> --type merge -p '{"spec":{"approved":true}}'
+```
+
+# Patch the CSV so that it is using a named registry in the image instead of defaulting to "grafana/grafana"
+
+```sh
+oc patch csv grafana-operator.v3.5.0 --type='json' \
+-p='[{"op": "replace", "path": "/spec/install/spec/deployments/0/spec/template/spec/containers/0/args", "value":["--grafana-image=quay.io/app-sre/grafana","--grafana-image-tag=6.5.1"]}]' \
+-n ${DEPLOYNAMESPACE}
+```
 
 ## Optional - update dashboards for your OCP version
 
