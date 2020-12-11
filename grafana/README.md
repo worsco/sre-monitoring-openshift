@@ -26,7 +26,7 @@ helm upgrade -i --create-namespace admin helm/admin -n ${DEPLOYNAMESPACE}
 helm upgrade -i --create-namespace grafana-operator helm/operator -n ${DEPLOYNAMESPACE}
 ```
 
-# Note: you need to manually approve the InstallPlan to install the grafana-operator
+## Manually approve the InstallPlan to install the grafana-operator
 
 ```sh
 oc get installplans
