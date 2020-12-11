@@ -36,7 +36,7 @@ oc get installplans -n ${DEPLOYNAMESPACE}
 oc patch installplan <INSTALLPLAN> n ${DEPLOYNAMESPACE} --type merge -p '{"spec":{"approved":true}}'
 ```
 
-# Patch the CSV so that it is using a named registry in the image instead of defaulting to "grafana/grafana"
+## Patch the CSV so that it is using a named registry in the image instead of defaulting to "grafana/grafana"
 
 ```sh
 oc patch csv grafana-operator.v3.5.0 --type='json' \
